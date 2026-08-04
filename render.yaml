@@ -19,7 +19,7 @@ services:
         placeholder: "Optional: Your Google Gemini API Key"
 
   # 2. React Vite Frontend Static Site
-  - type: static
+  - type: static_site
     name: support-ticket-tracker-web
     env: static
     buildCommand: cd frontend && npm install && npm run build
