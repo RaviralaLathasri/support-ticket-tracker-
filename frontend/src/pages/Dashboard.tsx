@@ -130,12 +130,14 @@ export const Dashboard: React.FC = () => {
                 {t.assignedAgent || 'Unassigned'}
               </span>
             ),
+            className: 'hidden sm:table-cell',
           },
         ]
       : []),
     {
       header: 'Created By',
       accessor: (t: Ticket) => <span className="text-sm text-slate-400">{t.createdByName}</span>,
+      className: 'hidden md:table-cell',
     },
     {
       header: 'Status',
@@ -153,7 +155,7 @@ export const Dashboard: React.FC = () => {
           })}
         </span>
       ),
-      className: 'w-32',
+      className: 'hidden sm:table-cell w-32',
     },
   ];
 
@@ -180,7 +182,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 select-none">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 select-none">
         <Card className="flex items-center gap-4 bg-slate-900/40 p-5">
           <div className="p-3 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-xl">
             <LayoutGrid className="h-5 w-5" />

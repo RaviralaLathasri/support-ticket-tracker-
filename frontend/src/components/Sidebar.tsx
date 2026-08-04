@@ -1,14 +1,18 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LayoutDashboard, LogOut, Shield, Ticket, User as UserIcon } from 'lucide-react';
+import { LayoutDashboard, LogOut, Shield, Ticket, User as UserIcon, X } from 'lucide-react';
 import { Button } from './Button';
 
 interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
   onNavigate?: (page: 'dashboard' | 'create-ticket') => void;
   activePage?: string;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
+  isOpen = false,
+  onClose,
   onNavigate,
   activePage = 'dashboard'
 }) => {
@@ -16,14 +20,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   if (!user) return null;
 
-  return (
-    <aside className="w-64 bg-slate-900 border-r border-slate-800/80 flex flex-col flex-shrink-0 h-screen select-none">
+  const sidebarContent = (
+    <aside className="w-64 bg-slate-900 border-r border-slate-800/80 flex flex-col flex-shrink-0 h-full select-none">
       {/* Brand Header */}
-      <div className="h-16 flex items-center gap-3 px-6 border-b border-slate-850">
-        <div className="p-2 bg-indigo-650/10 text-indigo-400 rounded-xl border border-indigo-550/20">
-          <Ticket className="h-5 w-5" />
+      <div className="h-16 flex items-center justify-between px-6 border-b border-slate-850">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-indigo-650/10 text-indigo-400 rounded-xl border border-indigo-550/20">
+            <Ticket className="h-5 w-5" />
+          </div>
+          <span className="font-bold text-slate-100 tracking-tight text-sm">Support Tracker AI</span>
         </div>
-        <span className="font-bold text-slate-100 tracking-tight text-sm">Support Tracker AI</span>
+        <button
+          onClick={onClose}
+          className="p-1 rounded-lg hover:bg-slate-800 text-slate-450 text-slate-400 hover:text-slate-200 transition-colors lg:hidden"
+        >
+          <X className="h-5 w-5" />
+        </button>
       </div>
 
       {/* User Information Profile Card */}
@@ -43,7 +55,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Nav Menu */}
       <nav className="flex-1 px-4 py-6 flex flex-col gap-1.5">
         <button
-          onClick={() => onNavigate?.('dashboard')}
+          onClick={() => {
+            onNavigate?.('dashboard');
+            onClose?.();
+          }}
           className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
             activePage === 'dashboard'
               ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/10'
@@ -63,5 +78,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </Button>
       </div>
     </aside>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:flex h-full flex-shrink-0">
+        {sidebarContent}
+      </div>
+
+      {/* Mobile Sidebar */}
+      {isOpen && (
+        <div className="fixed inset-0 z-40 flex lg:hidden animate-fade-in">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" onClick={onClose} />
+          {/* Sidebar drawer */}
+          <div className="relative z-10 h-full animate-slide-in">
+            {sidebarContent}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
