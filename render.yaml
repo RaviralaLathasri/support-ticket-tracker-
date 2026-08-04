@@ -1,24 +1,20 @@
 services:
-  # 1. FastAPI Backend Web Service
+  # 1. FastAPI Backend Web Service (100% Free Plan)
   - type: web
     name: support-ticket-tracker-api
+    plan: free
     env: python
     buildCommand: pip install -r backend/requirements.txt
     startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
-    disk:
-      name: db-disk
-      mountPath: /opt/render/project/src/backend/data
-      sizeGB: 1
     envVars:
       - key: PORT
         value: 10000
       - key: DATABASE_URL
-        value: sqlite+aiosqlite:////opt/render/project/src/backend/data/support_tickets.db
+        value: sqlite+aiosqlite:///./support_tickets.db
       - key: GEMINI_API_KEY
-        sync: false # User can input this manually in Render dashboard
-        placeholder: "Optional: Your Google Gemini API Key"
+        sync: false
 
-  # 2. React Vite Frontend Static Site (type: web with runtime: static)
+  # 2. React Vite Frontend Static Site (100% Free CDN)
   - type: web
     name: support-ticket-tracker-web
     runtime: static
