@@ -34,7 +34,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const refreshUsers = async () => {
     try {
       const response = await api.get<User[]>('/users');
-      setAvailableUsers(response.data);
+      if (Array.isArray(response.data)) {
+        setAvailableUsers(response.data);
+      } else {
+        console.error('Expected array for users, got:', response.data);
+      }
     } catch (e) {
       console.error('Failed to fetch available users:', e);
     }

@@ -44,7 +44,7 @@ export const Login: React.FC = () => {
           <div className="flex flex-col gap-3">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider select-none">Available Profiles</span>
             <div className="flex flex-col gap-2">
-              {availableUsers.length > 0 ? (
+              {Array.isArray(availableUsers) && availableUsers.length > 0 ? (
                 availableUsers.map((u) => {
                   const isSelected = selectedUserId === u.id;
                   return (
