@@ -1,0 +1,21 @@
+# Python environments and caches
+__pycache__/
+*.py[cod]
+*$py.class
+project_env/
+venv/
+.env
+*.db
+*.db-journal
+
+# Node build and packages
+node_modules/
+dist/
+.eslintcache
+.vite/
+
+# IDE/OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
