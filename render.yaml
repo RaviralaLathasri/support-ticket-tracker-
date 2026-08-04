@@ -18,12 +18,12 @@ services:
         sync: false # User can input this manually in Render dashboard
         placeholder: "Optional: Your Google Gemini API Key"
 
-  # 2. React Vite Frontend Static Site
-  - type: static_site
+  # 2. React Vite Frontend Static Site (type: web with runtime: static)
+  - type: web
     name: support-ticket-tracker-web
-    env: static
+    runtime: static
     buildCommand: cd frontend && npm install && npm run build
-    publishPath: frontend/dist
+    staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_URL
         fromService:
