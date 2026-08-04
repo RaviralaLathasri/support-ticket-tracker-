@@ -1,0 +1,37 @@
+services:
+  # 1. FastAPI Backend Web Service
+  - type: web
+    name: support-ticket-tracker-api
+    env: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    disk:
+      name: db-disk
+      mountPath: /opt/render/project/src/backend/data
+      sizeGB: 1
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:////opt/render/project/src/backend/data/support_tickets.db
+      - key: GEMINI_API_KEY
+        sync: false # User can input this manually in Render dashboard
+        placeholder: "Optional: Your Google Gemini API Key"
+
+  # 2. React Vite Frontend Static Site
+  - type: static
+    name: support-ticket-tracker-web
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    publishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: support-ticket-tracker-api
+          property: host
+    routes:
+      # Redirect all fallback SPA paths to index.html for React Router
+      - type: rewrite
+        source: /*
+        destination: /index.html
